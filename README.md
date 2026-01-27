@@ -1,16 +1,28 @@
-# React + Vite
+# MacBook GSAP App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación React + Vite + GSAP + Three.js para mostrar un MacBook Pro interactivo en 3D.
 
-Currently, two official plugins are available:
+## Tecnologías
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React** + **Vite**: Setup base con HMR y reglas ESLint
+- **Tailwind CSS**: Estilos y utilidades personalizadas
+- **GSAP**: Animaciones de scroll y transiciones
+- **Three.js** + **@react-three/fiber** + **@react-three/drei**: Renderizado 3D del MacBook
+- **Zustand**: Estado global (color y tamaño del modelo)
+- **clsx**: Clases CSS condicionales
 
-## React Compiler
+## Instalación
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+```
 
-## Expanding the ESLint configuration
+## Desarrollo
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm run dev
+```
+
+## Documentación adicional
+
+- [Notas sobre Three.js, Fiber y Drei](./docs/three-fiber-drei-notes.md): explicación de las herramientas 3D utilizadas
