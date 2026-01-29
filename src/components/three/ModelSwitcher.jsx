@@ -1,9 +1,10 @@
-import { PresentationControls } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import React, { useRef } from "react";
 import MacbookModel16 from "../models/Macbook-16";
 import MacbookModel14 from "../models/Macbook-14";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import * as THREE from "three";
 
 const ANIMATION_DURATION = 1;
 const OFFSET_DISTANCE = 5;
@@ -30,6 +31,7 @@ const ModelSwitcher = ({ scale, isMobile }) => {
   const SCALE_LARGE_MOBILE = 0.05;
   const smallMacbookRef = useRef();
   const largeMacbookRef = useRef();
+  const controlRef = useRef();
 
   const showLargeMacbook =
     scale === SCALE_LARGE_DESKTOP || scale === SCALE_LARGE_MOBILE;
@@ -50,29 +52,26 @@ const ModelSwitcher = ({ scale, isMobile }) => {
     }
   }, [scale]);
 
-  const controlsConfig = {
-    snap: true,
-    speed: 1,
-    zoom: 1,
-    polar: [-Math.PI, Math.PI],
-    azimuth: [-Infinity, Infinity],
-    config: { mass: 1, tension: 0, friction: 26 },
-  };
-
   return (
     <>
-      <PresentationControls
+      <OrbitControls
+        ref={controlRef}
         key={isMobile ? "mobile" : "desktop"}
-        {...controlsConfig}
-      >
-        <group ref={largeMacbookRef}>
-          <MacbookModel16 scale={isMobile ? 0.05 : 0.08} />
-        </group>
+        enableZoom={false}
+        enablePan={false}
+        rotateSpeed={0.4}
+        target={new THREE.Vector3(0, 0, 0)}
+        maxPolarAngle={Math.PI / 1.5}
+        minPolarAngle={Math.PI / 3}
+      />
 
-        <group ref={smallMacbookRef}>
-          <MacbookModel14 scale={isMobile ? 0.03 : 0.06} />
-        </group>
-      </PresentationControls>
+      <group ref={largeMacbookRef}>
+        <MacbookModel16 scale={isMobile ? 0.05 : 0.08} />
+      </group>
+
+      <group ref={smallMacbookRef}>
+        <MacbookModel14 scale={isMobile ? 0.03 : 0.06} />
+      </group>
     </>
   );
 };
