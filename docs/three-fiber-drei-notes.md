@@ -56,3 +56,157 @@ export default function Scene() {
 - Importa solo lo necesario de `drei` para mantener el bundle pequeño (tree-shaking).
 - Usa `Fiber` para la estructura base y estado/animaciones; añade `Drei` cuando un helper te evite código repetitivo.
 - Mantén los controles y la carga de recursos (GLTF/texturas) dentro de componentes dedicados para claridad.
+
+---
+
+# Conceptos clave de React y librerías
+
+## Hooks vs Dependencias vs Plugins
+
+### Dependencia
+
+Un paquete npm que instalas en tu proyecto. Ejemplo:
+
+- `react`
+- `gsap`
+- `react-responsive`
+
+### Hook
+
+Una función que una dependencia exporta. Todos los hooks:
+
+- Empiezan con `use` (convención)
+- Solo se usan dentro de componentes React
+- Acceden a estado y ciclo de vida
+
+Ejemplos:
+
+- `useState`, `useEffect` → vienen de `react`
+- `useMediaQuery` → viene de `react-responsive`
+- `useGSAP` → viene de `@gsap/react`
+
+**Un hook siempre es una función de una dependencia.**
+
+### Plugin
+
+Herramienta que se integra en otro sistema para extender funcionalidad.
+
+- Plugin de Vite, ESLint, Webpack, etc.
+
+### Relación
+
+```
+Dependencia (gsap)
+    ↓
+Hook (@gsap/react exporta useGSAP)
+    ↓
+Tu componente usa useGSAP()
+```
+
+## GSAP en React
+
+### Instalación
+
+Necesitas ambos paquetes:
+
+```
+npm install gsap @gsap/react
+```
+
+- **gsap**: librería base de animaciones (vanilla)
+- **@gsap/react**: integración oficial con React que proporciona `useGSAP`
+
+### Por qué dos?
+
+- `gsap` funciona en cualquier JavaScript
+- `@gsap/react` lo adapta a React, manejando automáticamente cleanup y ciclo de vida
+
+### ScrollTrigger: start y end
+
+Cuando configuras un ScrollTrigger, defines cuándo empieza y termina la animación durante el scroll.
+
+**Formato:** `'posición-del-elemento posición-de-la-pantalla'`
+
+```jsx
+scrollTrigger: {
+  trigger: '#showcase',
+  start: 'top top',      // empieza cuando el tope de #showcase toca el tope de la pantalla
+  end: 'end top'         // termina cuando el final de #showcase toca el tope de la pantalla
+}
+```
+
+**Explicación simple:**
+
+- `start: 'top top'` → "Inicia cuando el **inicio de la sección** llega al **tope de la pantalla**"
+- `end: 'end top'` → "Termina cuando el **final de la sección** llega al **tope de la pantalla**"
+
+**Ejemplo de scroll:**
+
+1. Haces scroll hacia abajo
+2. Cuando el inicio de `#showcase` toca el tope de tu pantalla → animación empieza
+3. Sigues haciendo scroll
+4. Cuando el final de `#showcase` toca el tope de tu pantalla → animación termina
+
+**Otras opciones comunes:**
+
+- `'top center'` → elemento toca el centro de la pantalla
+- `'bottom bottom'` → parte inferior del elemento toca el fondo de la pantalla
+- `'top 80%'` → elemento toca el 80% de altura de la pantalla
+
+## Media Queries en CSS y React
+
+### Sintaxis CSS
+
+Toda media query entre paréntesis:
+
+```css
+@media (max-width: 1024px) {
+  /* estilos */
+}
+```
+
+### Con useMediaQuery (react-responsive)
+
+```jsx
+import { useMediaQuery } from "react-responsive";
+
+const isTablet = useMediaQuery({ query: "(max-width: 1024px)" });
+```
+
+- El hook evalúa la consulta CSS
+- Devuelve `true` o `false`
+- Se actualiza cuando cambia el tamaño de ventana
+
+### Entender max-width
+
+`max-width: 1024px` = "si el ancho es **1024px o menos**"
+
+Analogía: "Si mides 1.40m **o menos**, entra gratis al parque"
+
+### Breakpoints en Tailwind
+
+- `sm`: 640px
+- `md`: 768px
+- `lg`: 1024px ← Breakpoint "large"
+- `xl`: 1280px
+- `2xl`: 1536px
+
+### Ejemplo en Tailwind
+
+```jsx
+<div className="lg:max-w-md"></div>
+```
+
+- En pantallas menores a 1024px: sin límite (puede ocupar todo el ancho)
+- En pantallas 1024px o mayores: ancho máximo limitado a 28rem (≈448px)
+
+## Tailwind: lg: prefix
+
+`lg:` es un **breakpoint prefix** que significa "aplica esta clase solo en pantallas `lg` o mayores"
+
+```jsx
+<div className="text-base lg:text-2xl"></div>
+```
+
+- Mobile/tablet: `text-base`
+- Desktop: `text-2xl`
