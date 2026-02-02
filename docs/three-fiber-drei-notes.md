@@ -153,6 +153,59 @@ scrollTrigger: {
 - `'bottom bottom'` → parte inferior del elemento toca el fondo de la pantalla
 - `'top 80%'` → elemento toca el 80% de altura de la pantalla
 
+### invalidateOnRefresh: true
+
+Hace que ScrollTrigger **recalcule y reinicie la animación** cuando:
+
+- La ventana se redimensiona
+- El DOM se actualiza
+- Se refresca la página
+
+**Sin él**: la animación podría quedar desalinhada si cambias el tamaño de pantalla.
+
+**Con él**: ScrollTrigger se adapta automáticamente a cambios y resetea la animación.
+
+```jsx
+scrollTrigger: {
+  trigger: '#showcase',
+  start: 'top top',
+  end: 'bottom top',
+  scrub: true,
+  invalidateOnRefresh: true,  // ← recalcula en cada resize/refresh
+}
+```
+
+**Usa esto siempre para animaciones responsive.**
+
+### scrub: número o true
+
+Sincroniza la animación con el scroll.
+
+**Opciones:**
+
+- `scrub: true` → animación sigue el scroll **exactamente** (inmediato, rígido)
+- `scrub: 1` → animación sigue con **1 segundo de suavizado** (fluido, elegante)
+- `scrub: 0.5` → suavizado rápido
+- `scrub: 2` → suavizado lento
+
+**Ejemplo:**
+
+```jsx
+scrollTrigger: {
+  trigger: '#showcase',
+  start: 'top top',
+  end: 'bottom top',
+  scrub: 1,  // ← sigue el scroll suavemente
+}
+```
+
+**Efecto visual:**
+
+- `true` = animación pegada al scroll (mecánica)
+- `1` = animación se desliza suavemente tras el scroll (más natural)
+
+**Recomendación**: usa `scrub: 1` para animaciones menos abruptas.
+
 ## Media Queries en CSS y React
 
 ### Sintaxis CSS
